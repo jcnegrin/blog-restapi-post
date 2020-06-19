@@ -27,7 +27,6 @@ export class PostsController {
 
     @Post()
     async createPost(@Headers('authorization') userToken: string, @CreatePost() post: CreatePostDto): Promise<Posts> {
-        console.log(post);
         if (!post.title || !post.content) {
             throw new BadRequestException('Invalid post content');
         }
