@@ -22,7 +22,8 @@ import { Role } from './entities/role.entity';
     entities: [Posts, User, Role],
     synchronize: true,
     logger: "advanced-console",
-    logging: "all"
+    logging: "all",
+    charset: 'utf8mb4'
   }), PostsModule],
   controllers: [AppController],
   providers: [AppService],
