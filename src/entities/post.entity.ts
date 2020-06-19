@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, PrimaryColumn, JoinTable } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
@@ -10,7 +10,7 @@ export class Posts {
     @Column()
     title: string;
 
-    @PrimaryColumn()
+    @Column()
     slug: string;
 
     @Column({type: 'longtext'})
@@ -32,6 +32,7 @@ export class Posts {
         type => User,
         user => user.id
     )
+    @JoinTable()
     user: User;
 
 }

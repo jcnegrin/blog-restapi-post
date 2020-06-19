@@ -19,8 +19,14 @@ export class PostsService {
             return this.postsRepository.find({relations: ['user']});
       }
 
-      findPost(postId: string): Promise<Posts> {
-            return this.postsRepository.findOne(postId);
+      async findPost(postIdOrSlug: string): Promise<Posts> {
+            const post = await getRepository(Posts)
+                  .createQueryBuilder('post')
+                  .where("post.id = :postIdOrSlug", {postIdOrSlug})
+                  .orWhere("post.slug = :postIdOrSlug", {postIdOrSlug} )
+                  .leftJoinAndSelect('post.user', 'user')
+                  .getOne();
+            return post;
       }
 
       async createPost(user: UserDto, post: CreatePostDto): Promise<Posts> {
@@ -36,6 +42,7 @@ export class PostsService {
             // Getting User from DB to make the relation
             const userRepository = getRepository(User);
             const postUser: User = await userRepository.findOne({where: {id: user.id, user_id: user.user_id, email: user.email}});
+            // -----------------------------------------
             newPost.user = postUser;
 
            return await this.postsRepository.save(newPost);
@@ -43,10 +50,12 @@ export class PostsService {
 
       private sanitizeSlug(slug: string): string {
           const invalidCharacter = /[!@#$%^&*(),.?":{}|<>\\\/]/g;
+          const spaceCharacter = /\s+/g;
           let sanitizedSlug: string = slug;
-          sanitizedSlug = sanitizedSlug.replace(invalidCharacter, '');
-          sanitizedSlug = sanitizedSlug.replace(' ', '-');
           sanitizedSlug = sanitizedSlug.trim();
+          sanitizedSlug = sanitizedSlug.toLowerCase();
+          sanitizedSlug = sanitizedSlug.replace(invalidCharacter, '');
+          sanitizedSlug = sanitizedSlug.replace(spaceCharacter, '-');
           return sanitizedSlug;
       }
 

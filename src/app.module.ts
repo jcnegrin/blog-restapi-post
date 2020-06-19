@@ -21,6 +21,8 @@ import { Role } from './entities/role.entity';
     database: process.env.AWS_MYSQL_DATABASE,
     entities: [Posts, User, Role],
     synchronize: true,
+    logger: "advanced-console",
+    logging: "all"
   }), PostsModule],
   controllers: [AppController],
   providers: [AppService],
