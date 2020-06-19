@@ -2,8 +2,9 @@
 import { Controller, Get, Param, BadRequestException, Req, Post, Headers } from '@nestjs/common';
 import { Posts } from 'src/entities/post.entity';
 import { PostsService } from './posts.service';
-import { Request } from 'express';
 import { CreatePostDto } from 'src/dto/createPostDto';
+import { UserDto } from 'src/dto/UserDto';
+import { CreatePost } from 'src/business/CreatePost.decorator';
 
 @Controller('posts')
 export class PostsController {
@@ -25,12 +26,15 @@ export class PostsController {
     }
 
     @Post()
-    createPost(@Headers('authorization') userData: string, @Req() post: CreatePostDto): Promise<Posts> {
+    async createPost(@Headers('authorization') userToken: string, @CreatePost() post: CreatePostDto): Promise<Posts> {
+        console.log(post);
         if (!post.title || !post.content) {
             throw new BadRequestException('Invalid post content');
         }
-
-        return ;
+        const user: UserDto = await this.postService.getUserData(userToken);
+        const posted = await this.postService.createPost(user, post);
+    
+        return posted;
     }
 
 }

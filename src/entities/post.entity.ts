@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
@@ -10,7 +10,7 @@ export class Posts {
     @Column()
     title: string;
 
-    @Column()
+    @PrimaryColumn()
     slug: string;
 
     @Column({type: 'longtext'})
@@ -18,6 +18,9 @@ export class Posts {
 
     @Column({type: 'text'})
     description: string;
+
+    @Column({nullable: true})
+    image: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -29,6 +32,6 @@ export class Posts {
         type => User,
         user => user.id
     )
-    user_id: string;
+    user: User;
 
 }
