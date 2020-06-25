@@ -4,8 +4,11 @@ import { Posts } from 'src/entities/post.entity';
 import { Repository, getConnection, getRepository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import { UserDto } from 'src/dto/UserDto';
-import { CreatePostDto } from 'src/dto/createPostDto';
+import { CreatePostDto } from 'src/dto/CreatePostDto';
 import { User } from 'src/entities/user.entity';
+import * as AWS from 'aws-sdk';
+import { getGetSignedUrl, getPutSignedUrl } from 'src/business/aws';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class PostsService {
@@ -64,5 +67,14 @@ export class PostsService {
             const token = bearer_token[1];
             const userInfo: UserDto = await jwt.verify(token, process.env.JWT_SECRET) as UserDto;
             return userInfo;
+      }
+
+      generateGetSignedURL(imageId: string): string {
+            return getGetSignedUrl(imageId);
+      }
+
+      generatePutSignedURL(): string {
+            const uuid = uuidv4();
+            return getPutSignedUrl(uuid);
       }
 }

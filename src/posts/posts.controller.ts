@@ -2,7 +2,7 @@
 import { Controller, Get, Param, BadRequestException, Req, Post, Headers } from '@nestjs/common';
 import { Posts } from 'src/entities/post.entity';
 import { PostsService } from './posts.service';
-import { CreatePostDto } from 'src/dto/createPostDto';
+import { CreatePostDto } from 'src/dto/CreatePostDto';
 import { UserDto } from 'src/dto/UserDto';
 import { CreatePost } from 'src/business/CreatePost.decorator';
 
@@ -14,6 +14,12 @@ export class PostsController {
     @Get()
     async getAllPosts(): Promise<Posts[]> {
         return await this.postService.findAllPost();
+    }
+
+    @Get('signed-url')
+    getMediaPutSignedURL(): string {
+        const url = this.postService.generatePutSignedURL();
+        return url;
     }
 
     @Get(':postId')

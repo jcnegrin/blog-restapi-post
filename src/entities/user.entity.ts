@@ -10,9 +10,6 @@ export class User {
 
     @PrimaryColumn()
     email: string;
-    
-    @PrimaryColumn()
-    user_id: string;
 
     @Column({select: false})
     password: string;

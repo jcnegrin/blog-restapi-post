@@ -1,0 +1,24 @@
+language: minimal
+
+services: docker
+
+env:
+  - CONTAINER_IMAGE=blog-restapi-posts
+
+before_install:
+  - docker -v
+  - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+
+install:
+  - docker pull ${DOCKER_USERNAME}/${CONTAINER_IMAGE}:latest || true
+  - >
+      docker build
+      --pull
+      --cache-from ${DOCKER_USERNAME}/${CONTAINER_IMAGE}:latest
+      --tag ${DOCKER_USERNAME}/${CONTAINER_IMAGE}:latest
+      .
+  - docker tag ${DOCKER_USERNAME}/${CONTAINER_IMAGE}:latest ${DOCKER_USERNAME}/${CONTAINER_IMAGE}:latest
+  - docker push ${DOCKER_USERNAME}/${CONTAINER_IMAGE}
+
+after_install:
+  - docker logout
