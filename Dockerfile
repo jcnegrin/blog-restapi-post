@@ -19,7 +19,7 @@ COPY . /usr/src/app
 RUN npm run build
 
 # start app
-EXPOSE 3000
+EXPOSE 8080
 ENTRYPOINT ["node", "dist/main.js"]
 
 
