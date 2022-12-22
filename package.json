@@ -28,7 +28,7 @@
     "@ngrx/store": "^9.2.0",
     "@types/jsonwebtoken": "^8.5.0",
     "aws-sdk": "^2.702.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
